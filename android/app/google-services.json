@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "538414318999",
+    "firebase_url": "https://fypd-d0e2e-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "fypd-d0e2e",
+    "storage_bucket": "fypd-d0e2e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:538414318999:android:540cfe7287846ff364f0d2",
+        "android_client_info": {
+          "package_name": "com.example.fydp_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "538414318999-f1q8ts4t2ei019t051782eni85052p93.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBe4NSLrlSmdiDUcQD8FGkdLAr8ww4TSvc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "538414318999-f1q8ts4t2ei019t051782eni85052p93.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
