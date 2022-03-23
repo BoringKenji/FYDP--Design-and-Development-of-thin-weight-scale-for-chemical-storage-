@@ -1,4 +1,4 @@
-# fydp_app (In developing stage)
+# fydp_app (Very Beginning stage)
 
 
 [Flutter Web deployed on github](https://boringkenji.github.io/FYDP/#/)
