@@ -22,7 +22,7 @@ class TitleWithMorebtn extends StatelessWidget {
           TextButton(
               onPressed: () async {
                 const url =
-                    "https://fypd-d0e2e-default-rtdb.asia-southeast1.firebasedatabase.app/.json";
+                    'https://fypd-d0e2e-default-rtdb.asia-southeast1.firebasedatabase.app/test.json?orderBy="Timestamp"&limitToLast=1';
                 try {
                   final response = await http.get(Uri.parse(url));
                   if (response.statusCode == 200) {
@@ -31,7 +31,8 @@ class TitleWithMorebtn extends StatelessWidget {
                     print("connection fail to firebase");
                   }
                   var extractedData = jsonDecode(response.body);
-                  print(extractedData["test"]);
+                  print(Map<String, dynamic>.from(extractedData).values.toList()[0]['Weight_in_gram']);
+
                 } catch (e) {
                   print(e);
                 }

@@ -1,7 +1,10 @@
+import 'dart:convert';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fydp_app/constants.dart';
+import 'package:http/http.dart' as http;
 
-class HeaderWithSearchBox extends StatelessWidget {
+class HeaderWithSearchBox extends StatefulWidget {
   const HeaderWithSearchBox({
     Key? key,
     required this.size,
@@ -10,73 +13,67 @@ class HeaderWithSearchBox extends StatelessWidget {
   final Size size;
 
   @override
+  State<HeaderWithSearchBox> createState() => _HeaderWithSearchBoxState();
+}
+
+class _HeaderWithSearchBoxState extends State<HeaderWithSearchBox> {
+  double weight = 0;
+  Timer? timer;
+  void getFirebase() async {
+    const url =
+        'https://fypd-d0e2e-default-rtdb.asia-southeast1.firebasedatabase.app/test.json?orderBy="Timestamp"&limitToLast=1';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        print("200");
+      } else {
+        print("connection fail to firebase");
+      }
+      var extractedData = jsonDecode(response.body);
+      print(extractedData);
+      setState(() {
+        weight = Map<String, dynamic>.from(extractedData)
+            .values
+            .toList()[0]['Weight_in_gram']
+            .toDouble();
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    timer = Timer.periodic(Duration(seconds: 3), (Timer t) => getFirebase());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: kDefaultPadding * 2.5),
-      height: size.height * 0.2,
-      child: Stack(
-        children: <Widget>[
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
           Container(
-            padding: const EdgeInsets.only(
-              left: kDefaultPadding,
-              right: kDefaultPadding,
-              bottom: 36 + kDefaultPadding,
-            ),
-            height: size.height * 0.2 - 27,
-            decoration: const BoxDecoration(
-              color: kPrimaryColor,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(36),
-                bottomRight: Radius.circular(36),
-              ),
-            ),
-            child: Row(
-              children: const <Widget>[
-                Text(
-                  'Lab User',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold, fontSize: 35),
-                ),
-                const Spacer(),
-                const Icon(Icons.account_circle),
-              ],
+            child: Image.asset(
+              "assets/images/Tray.png",
+              fit: BoxFit.fill,
             ),
           ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
+          GestureDetector(
             child: Container(
-              alignment: Alignment.center,
-              margin:
-                  const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-              height: 54,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    offset: Offset(0, 10),
-                    blurRadius: 50,
-                    color: kPrimaryColor.withOpacity(0.23),
-                  ),
-                ],
-              ),
-              child: TextField(
-                onChanged: (value) {},
-                decoration: InputDecoration(
-                  hintText: "Search",
-                  hintStyle: TextStyle(
-                    color: kPrimaryColor.withOpacity(0.5),
-                  ),
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  suffixIcon: const Icon(Icons.search),
-                ),
+              padding: EdgeInsets.only(top: 10),
+              child: Text(
+                'Weight : $weight',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22,
+                    color: Color(0xFF0C9869)),
               ),
             ),
+            onTap: () {},
           )
         ],
       ),
