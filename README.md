@@ -1,5 +1,6 @@
 # fydp_app
+In developing stage
 
-A new Flutter project.
+https://boringkenji.github.io/FYDP/#/
 
 
