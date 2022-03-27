@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:fydp_app/constants.dart';
-
+import 'package:fydp_app/presentation/constants.dart';
+import '../../details/chemicals_details.dart';
 
 class Recommand_chemicals extends StatelessWidget {
   Recommand_chemicals({
     Key? key,
   }) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -19,22 +18,58 @@ class Recommand_chemicals extends StatelessWidget {
               image: "assets/images/Green_test_tube.png",
               title: "H2O",
               country: "Hong Kong",
-              precentage: 100,
-              press: () {},
+              precentage: 60,
+              press: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Chemicals_Details(
+                        id: 1,
+                        name: "H2O",
+                        brand: "Scharlau",
+                        cas: "7732-18-5",
+                        purchasedate: "NA",
+                      ),
+                    ));
+              },
             ),
             RecommendPlantCard(
               image: "assets/images/Orange_testtube.png",
               title: "HCl",
               country: "Russia",
               precentage: 75,
-              press: () {},
+              press: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Chemicals_Details(
+                        id: 2,
+                        name: "HCl",
+                        brand: "Scharlau",
+                        cas: "7647-01-0",
+                        purchasedate: "NA",
+                      ),
+                    ));
+              },
             ),
             RecommendPlantCard(
               image: "assets/images/pink_testtube.png",
               title: "NaCl",
               country: "Brazil",
               precentage: 100,
-              press: () {},
+              press: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Chemicals_Details(
+                        id: 3,
+                        name: "Nacl",
+                        brand: "Scharlau",
+                        cas: "7647-14-5",
+                        purchasedate: "NA",
+                      ),
+                    ));
+              },
             ),
           ],
         ),
@@ -68,12 +103,12 @@ class RecommendPlantCard extends StatelessWidget {
       ),
       width: size.width * 0.4,
       // height: size.height * 0.4,
-      child: Column(
-        children: [
-          Image.asset(image),
-          GestureDetector(
-            onTap: () => press,
-            child: Container(
+      child: TextButton(
+        onPressed: () => press(),
+        child: Column(
+          children: [
+            Image.asset(image),
+            Container(
               padding: EdgeInsets.all(kDefaultPadding / 2),
               decoration: BoxDecoration(
                   color: Colors.white,
@@ -111,9 +146,9 @@ class RecommendPlantCard extends StatelessWidget {
                   )
                 ],
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

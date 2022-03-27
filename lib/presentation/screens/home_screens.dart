@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:fydp_app/constants.dart';
-import 'package:fydp_app/screens/components/body.dart';
-import 'package:http/http.dart' as http;
+import 'package:fydp_app/presentation/constants.dart';
+import 'home/components/body.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);

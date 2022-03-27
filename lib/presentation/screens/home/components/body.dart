@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'header_with_searchbox.dart';
+import 'tray_weight.dart';
 import 'title_with_more_btn.dart';
 import 'recommand_chemicals.dart';
 
@@ -12,7 +12,7 @@ class Body extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          HeaderWithSearchBox(size: size),
+          Tray_weight(size: size),
           TitleWithMorebtn(title: "Repository"),
           Recommand_chemicals()
         ],

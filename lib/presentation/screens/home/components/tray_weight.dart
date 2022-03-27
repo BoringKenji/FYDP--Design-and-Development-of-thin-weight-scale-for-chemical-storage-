@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:fydp_app/constants.dart';
+import 'package:fydp_app/presentation/constants.dart';
 import 'package:http/http.dart' as http;
 
-class HeaderWithSearchBox extends StatefulWidget {
-  const HeaderWithSearchBox({
+class Tray_weight extends StatefulWidget {
+  const Tray_weight({
     Key? key,
     required this.size,
   }) : super(key: key);
@@ -13,10 +13,10 @@ class HeaderWithSearchBox extends StatefulWidget {
   final Size size;
 
   @override
-  State<HeaderWithSearchBox> createState() => _HeaderWithSearchBoxState();
+  State<Tray_weight> createState() => _Tray_weightState();
 }
 
-class _HeaderWithSearchBoxState extends State<HeaderWithSearchBox> {
+class _Tray_weightState extends State<Tray_weight> {
   double weight = 0;
   Timer? timer;
   void getFirebase() async {

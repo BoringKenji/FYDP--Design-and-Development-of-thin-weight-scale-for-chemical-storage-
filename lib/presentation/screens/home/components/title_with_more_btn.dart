@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:fydp_app/constants.dart';
+import 'package:fydp_app/presentation/constants.dart';
 import 'package:http/http.dart' as http;
 
 class TitleWithMorebtn extends StatelessWidget {
