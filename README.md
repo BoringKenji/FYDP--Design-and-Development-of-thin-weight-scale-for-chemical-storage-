@@ -1,16 +1,17 @@
-# fydp_app
+# fydp_app (Very Beginning stage)
 
-A new Flutter project.
 
-## Getting Started
+[Flutter Web deployed on github](https://boringkenji.github.io/FYDP/#/)
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![image](https://user-images.githubusercontent.com/76833698/159671889-3125e33d-6f7e-42b6-b52a-148990fe313f.png)
+
+
+https://user-images.githubusercontent.com/76833698/159726321-09f0e1e3-b271-4bc4-b5a9-01aa321b9fb7.mp4
+
+
+
+https://user-images.githubusercontent.com/76833698/159960879-ddaa121b-e0cb-4054-8e4d-9e7f66ad0991.mp4
+
