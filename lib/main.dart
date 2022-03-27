@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
-import 'constants.dart';
-import 'screens/home_screens.dart';
+import 'package:fydp_app/presentation/screens/home_page.dart';
+import 'package:fydp_app/weight_observer.dart';
+import 'presentation/constants.dart';
+import 'package:bloc/bloc.dart';
 
-void main() async{
-  runApp(const MyApp());
+void main() {
+  BlocOverrides.runZoned(() => runApp(const MyApp()),
+      blocObserver: WeightObserver());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
- 
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,7 +23,7 @@ class MyApp extends StatelessWidget {
         textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomeScreen(),
+      home: const HomePage(),
     );
   }
 }
