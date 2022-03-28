@@ -46,7 +46,7 @@ class _Tray_weightState extends State<Tray_weight> {
 
   @override
   void initState() {
-    super.initState();
+    super.initState();//
     timer = Timer.periodic(Duration(seconds: 10), (Timer t) => getFirebase());
   }
 
