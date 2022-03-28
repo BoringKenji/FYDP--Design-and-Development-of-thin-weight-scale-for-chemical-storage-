@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fydp_app/business_logic/cubit/weight_cubit.dart';
+import 'package:fydp_app/business_logic/bloc/weight_bloc.dart';
+import 'package:fydp_app/data/repositories/weight_repository.dart';
 import 'home_screens.dart';
 
 /// {@template counter_page}
@@ -14,8 +15,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => WeightCubit(),
-      child: HomeScreen(),
+      create: (_) => WeightBloc(WeightRepository()),
+      child: const HomeScreen(),
     );
   }
 }

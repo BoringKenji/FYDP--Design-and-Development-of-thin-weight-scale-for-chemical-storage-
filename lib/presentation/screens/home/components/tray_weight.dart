@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fydp_app/business_logic/bloc/weight_bloc.dart';
 import 'package:fydp_app/presentation/constants.dart';
 import 'package:http/http.dart' as http;
 
@@ -45,7 +47,7 @@ class _Tray_weightState extends State<Tray_weight> {
   @override
   void initState() {
     super.initState();
-    timer = Timer.periodic(Duration(seconds: 3), (Timer t) => getFirebase());
+    timer = Timer.periodic(Duration(seconds: 10), (Timer t) => getFirebase());
   }
 
   @override
