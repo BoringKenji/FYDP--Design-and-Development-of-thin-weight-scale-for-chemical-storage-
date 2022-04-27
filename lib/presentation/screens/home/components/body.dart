@@ -14,7 +14,8 @@ class Body extends StatelessWidget {
         children: <Widget>[
           Tray_weight(size: size),
           TitleWithMorebtn(title: "Repository"),
-          Recommand_chemicals()
+          Recommand_chemicals(),
+
         ],
       ),
     );

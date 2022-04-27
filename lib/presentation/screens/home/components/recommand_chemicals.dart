@@ -1,77 +1,78 @@
+import 'dart:async';
+import 'dart:convert';
+import "dart:math";
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:fydp_app/presentation/constants.dart';
 import '../../details/chemicals_details.dart';
 
-class Recommand_chemicals extends StatelessWidget {
+class Recommand_chemicals extends StatefulWidget {
   Recommand_chemicals({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<Recommand_chemicals> createState() => _Recommand_chemicalsState();
+}
+
+class _Recommand_chemicalsState extends State<Recommand_chemicals> {
+  Timer? timer;
+  List<RecommendPlantCard> cardlist = [];
+  var assest_list = [
+    "assets/images/Green_test_tube.png",
+    "assets/images/Orange_testtube.png",
+    "assets/images/pink_testtube.png"
+  ];
+  final _random = new Random();
+  @override
+  void getFirebase() async {
+    String url =
+        'https://fypd-d0e2e-default-rtdb.asia-southeast1.firebasedatabase.app/chemicals.json';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        print("success to get chemiclas details");
+      } else {
+        print("connection fail to firebase");
+      }
+      var extractedData = jsonDecode(response.body);
+      var body = Map<String, dynamic>.from(extractedData).values.toList();
+      print(body);
+      cardlist.clear();
+      for (int i = 0; i < body.length; i++) {
+        cardlist.add(RecommendPlantCard(
+          image: assest_list[i % 3],
+          name: body[i]["Name"],
+          id: body[i]["ID"],
+          brand: body[i]["Brand"],
+          cas: body[i]["CAS"],
+          purchasedate: body[i]["Purchasedate"],
+          precentage: 100,
+        ));
+      }
+      // print(extractedData);
+      setState(() {
+        ;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState(); //
+    timer = Timer.periodic(Duration(seconds: 3), (Timer t) => getFirebase());
+  }
+
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Expanded(
         child: Row(
-          children: [
-            RecommendPlantCard(
-              image: "assets/images/Green_test_tube.png",
-              title: "H2O",
-              country: "Hong Kong",
-              precentage: 60,
-              press: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Chemicals_Details(
-                        id: 1,
-                        name: "H2O",
-                        brand: "Scharlau",
-                        cas: "7732-18-5",
-                        purchasedate: "NA",
-                      ),
-                    ));
-              },
-            ),
-            RecommendPlantCard(
-              image: "assets/images/Orange_testtube.png",
-              title: "HCl",
-              country: "Russia",
-              precentage: 75,
-              press: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Chemicals_Details(
-                        id: 2,
-                        name: "HCl",
-                        brand: "Scharlau",
-                        cas: "7647-01-0",
-                        purchasedate: "NA",
-                      ),
-                    ));
-              },
-            ),
-            RecommendPlantCard(
-              image: "assets/images/pink_testtube.png",
-              title: "NaCl",
-              country: "Brazil",
-              precentage: 100,
-              press: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Chemicals_Details(
-                        id: 3,
-                        name: "Nacl",
-                        brand: "Scharlau",
-                        cas: "7647-14-5",
-                        purchasedate: "NA",
-                      ),
-                    ));
-              },
-            ),
-          ],
+          children: cardlist,
         ),
       ),
     );
@@ -81,16 +82,18 @@ class Recommand_chemicals extends StatelessWidget {
 class RecommendPlantCard extends StatelessWidget {
   const RecommendPlantCard({
     Key? key,
-    required this.country,
-    required this.title,
+    required this.id,
+    this.name,
     required this.image,
     required this.precentage,
-    required this.press,
+    this.brand,
+    this.cas,
+    this.purchasedate,
   }) : super(key: key);
 
-  final String image, title, country;
+  final String image, id;
   final int precentage;
-  final Function press;
+  final String? brand, cas, purchasedate, name;
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +107,19 @@ class RecommendPlantCard extends StatelessWidget {
       width: size.width * 0.4,
       // height: size.height * 0.4,
       child: TextButton(
-        onPressed: () => press(),
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Chemicals_Details(
+                  id: id,
+                  name: name ?? "Name",
+                  brand: brand ?? "Brand",
+                  cas: cas ?? "CAS",
+                  purchasedate: purchasedate ?? "NA",
+                ),
+              ));
+        },
         child: Column(
           children: [
             Image.asset(image),
@@ -129,11 +144,11 @@ class RecommendPlantCard extends StatelessWidget {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: "$title\n".toUpperCase(),
+                          text: "$name\n".toUpperCase(),
                           style: Theme.of(context).textTheme.button,
                         ),
                         TextSpan(
-                            text: "$country".toUpperCase(),
+                            text: "$id".toUpperCase(),
                             style: TextStyle(
                                 color: kPrimaryColor.withOpacity(0.5)))
                       ],

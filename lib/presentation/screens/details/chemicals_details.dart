@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'body.dart';
 
 class Chemicals_Details extends StatelessWidget {
-  final int id;
+  final String id;
   final String name;
   final String brand;
   final String cas;
@@ -19,6 +19,10 @@ class Chemicals_Details extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Chemicals Detail'),
+        elevation: 0,
+      ),
       body: Body(
         id: id,
         name: name,
