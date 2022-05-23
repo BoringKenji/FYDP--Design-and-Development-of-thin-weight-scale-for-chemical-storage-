@@ -20,36 +20,37 @@ class Recommand_chemicals extends StatefulWidget {
 class _Recommand_chemicalsState extends State<Recommand_chemicals> {
   Timer? timer;
   List<RecommendPlantCard> cardlist = [];
-  var assest_list = [
+  var assestList = [
     "assets/images/Green_test_tube.png",
     "assets/images/Orange_testtube.png",
     "assets/images/pink_testtube.png"
   ];
-  final _random = new Random();
-  @override
   void getFirebase() async {
     String url =
         'https://fypd-d0e2e-default-rtdb.asia-southeast1.firebasedatabase.app/chemicals.json';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
-        print("success to get chemiclas details");
+        //print("success to get chemiclas details");
       } else {
         print("connection fail to firebase");
       }
       var extractedData = jsonDecode(response.body);
-      var body = Map<String, dynamic>.from(extractedData).values.toList();
-      print(body);
+      var body = [];
+      if(extractedData != null){
+        body = Map<String, dynamic>.from(extractedData).values.toList();
+      }
+      //print(body);
       cardlist.clear();
       for (int i = 0; i < body.length; i++) {
         cardlist.add(RecommendPlantCard(
-          image: assest_list[i % 3],
+          image: assestList[i % 3],
           name: body[i]["Name"],
           id: body[i]["ID"],
           brand: body[i]["Brand"],
           cas: body[i]["CAS"],
           purchasedate: body[i]["Purchasedate"],
-          precentage: 100,
+          weight: body[i]["weight"],
         ));
       }
       // print(extractedData);
@@ -64,7 +65,7 @@ class _Recommand_chemicalsState extends State<Recommand_chemicals> {
   @override
   void initState() {
     super.initState(); //
-    timer = Timer.periodic(Duration(seconds: 3), (Timer t) => getFirebase());
+    timer = Timer.periodic(Duration(seconds: 5), (Timer t) => getFirebase());
   }
 
   Widget build(BuildContext context) {
@@ -85,15 +86,14 @@ class RecommendPlantCard extends StatelessWidget {
     required this.id,
     this.name,
     required this.image,
-    required this.precentage,
+    required this.weight,
     this.brand,
     this.cas,
     this.purchasedate,
   }) : super(key: key);
 
   final String image, id;
-  final int precentage;
-  final String? brand, cas, purchasedate, name;
+  final String? brand, cas, purchasedate, name, weight;
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +156,7 @@ class RecommendPlantCard extends StatelessWidget {
                   ),
                   Spacer(),
                   Text(
-                    '$precentage%',
+                    (weight??'Null') + ' g',
                     style: Theme.of(context).textTheme.button,
                   )
                 ],

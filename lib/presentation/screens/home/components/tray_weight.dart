@@ -29,11 +29,6 @@ class _Tray_weightState extends State<Tray_weight> {
         'https://fypd-d0e2e-default-rtdb.asia-southeast1.firebasedatabase.app/test.json?orderBy="Timestamp"&limitToLast=$numberOfData';
     try {
       final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        print("200");
-      } else {
-        print("connection fail to firebase");
-      }
       var extractedData = jsonDecode(response.body);
       var body = Map<String, dynamic>.from(extractedData).values.toList();
       chartData.clear();
@@ -42,8 +37,63 @@ class _Tray_weightState extends State<Tray_weight> {
       }
       // print(extractedData);
       setState(() {
-        weight = body[body.length-1]['Weight_in_gram'].toDouble();
+        weight = body[body.length - 1]['Weight_in_gram'].toDouble();
       });
+
+      //update new chemicals weight
+      String tags = body[numberOfData - 1]['RFID_tags_id_array'];
+      String previousTags = body[numberOfData - 2]['RFID_tags_id_array'];
+      String modifyID = '';
+      double modifyWeight = weight;
+      for (int i = 0; i < tags.length; i = i + 8) {
+        String targetID = tags.substring(i, i + 8);
+        String url =
+            'https://fypd-d0e2e-default-rtdb.asia-southeast1.firebasedatabase.app/chemicals/$targetID.json';
+        try {
+          final response = await http.get(Uri.parse(url));
+          var extractedData = jsonDecode(response.body);
+          var targetWeight = extractedData['weight'];
+          if (!previousTags.contains(targetID)) {
+            modifyID = targetID;
+          } else {
+            modifyWeight -= double.parse(targetWeight);
+          }
+        } catch (e) {
+          print(e);
+        }
+      }
+      print(weight);
+      print(body[body.length - 2]['Weight_in_gram'].toDouble());
+      print(modifyID);
+      print(modifyWeight);
+      if (modifyID == '') {
+        return;
+      }
+      // update weight
+      String modifyURL =
+          'https://fypd-d0e2e-default-rtdb.asia-southeast1.firebasedatabase.app/chemicals/' +
+              modifyID +
+              '.json';
+      String modifyWeightInString = '';
+      if (modifyWeight.toString().length > 7) {
+        modifyWeightInString = modifyWeight.toString().substring(0, 6);
+      } else {
+        modifyWeightInString = modifyWeight.toString();
+      }
+      try {
+        final response = await http.patch(
+          Uri.parse(modifyURL),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            "weight": modifyWeightInString,
+          }),
+        );
+        //print(response.body);
+      } catch (e) {
+        print(e);
+      }
     } catch (e) {
       print(e);
     }
@@ -52,7 +102,7 @@ class _Tray_weightState extends State<Tray_weight> {
   @override
   void initState() {
     super.initState(); //
-    timer = Timer.periodic(Duration(seconds: 10), (Timer t) => getFirebase());
+    timer = Timer.periodic(Duration(seconds: 5), (Timer t) => getFirebase());
   }
 
   @override
@@ -71,7 +121,7 @@ class _Tray_weightState extends State<Tray_weight> {
           Container(
             padding: EdgeInsets.only(top: 10),
             child: Text(
-              'Weight : $weight',
+              'Weight : $weight g',
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -98,7 +148,7 @@ class _Tray_weightState extends State<Tray_weight> {
               border: OutlineInputBorder(),
               labelText: 'Number of Data',
             ),
-            onChanged: (val){
+            onChanged: (val) {
               numberOfData = int.parse(val);
             },
           ),
